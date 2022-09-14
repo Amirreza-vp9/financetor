@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import ExternalStateExample from "./map";
 
 const CREATE_EXPENSE = gql`
   mutation Create_expense($data: ExpenseInfo!) {
@@ -30,7 +31,6 @@ const CreateExpense = () => {
   const [date, setDate] = useState(
     moment(currentDate).utc().format("YYYY-MM-DD")
   );
-  const [geo, setGeo] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [municipalityZone, setMunicipalityZone] = useState("");
   const [neighbourhood, setNeighbourhood] = useState("");
@@ -39,6 +39,7 @@ const CreateExpense = () => {
   const [arr, setArr] = useState([]);
   const navigate = useNavigate();
   const { data, loading, error, refetch } = useQuery(GET_MY_TAGS);
+  const [position, setPosition] = useState("");
 
   if (loading) return <p className="text-white">Loading...</p>;
   if (error) return <p className="text-white">Error :(</p>;
@@ -52,8 +53,8 @@ const CreateExpense = () => {
         data: {
           amount: Number(amount),
           geo: {
-            lat: 2,
-            lon: 2,
+            lat: position.lat,
+            lon: position.lng,
           },
           tags: tag,
           date: moment(currentDate).utc().format("YYYY-MM-DD"),
@@ -152,11 +153,9 @@ const CreateExpense = () => {
           </div>
           <div className="mb-[2em]">
             <h5 className="text-white mb-[.5em] font-medium">Geo</h5>
-            <input
-              className="py-[2px] px-[.5em] w-[100%]"
-              value={geo}
-              onChange={(e) => setGeo(e.target.value)}
-            />
+            <div>
+              <ExternalStateExample absolutePosition={setPosition} />
+            </div>
           </div>
           <div className="text-gray-200 font-medium mt-[-1em] mb-[.25em]">
             Address :

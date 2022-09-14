@@ -35,6 +35,8 @@ const MyExpense = () => {
 
   refetch();
 
+  console.log(data);
+
   return (
     <>
       {data && (
@@ -89,6 +91,16 @@ const MyExpense = () => {
                       </div>
                     );
                   })}
+                </div>
+                <div className="mt-[4em]">
+                  <div className="flex gap-[.5em]">
+                    <div>Lat: </div>
+                    <div>{item.geo.lat.toFixed(2)}</div>
+                  </div>
+                  <div className="flex gap-[.5em]">
+                    <div>Lon: </div>
+                    <div>{item.geo.lon.toFixed(2)}</div>
+                  </div>
                 </div>
                 <DeleteExpense id={item._id} />
               </div>
